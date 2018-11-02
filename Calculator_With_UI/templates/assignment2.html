@@ -143,7 +143,13 @@
 										<font color="grey">
 										<b>{{stock_data['time']}}</b><br/><br/>
 										{{stock_data['name']}} ({{stock_data['symbol']}})<br/><br/>
-										{{stock_data['current']}} {{stock_data['change_by_vol']}} ({{stock_data['change_by_percent']}}%)<br/>
+										{{stock_data['current']}} {{stock_data['currency']}}
+											{%if '-' in stock_data['change_by_vol']%}
+													<font color="red">
+											{%else%}
+													<font color="green">
+											{%endif%}
+											{{stock_data['change_by_vol']}} ({{stock_data['change_by_percent']}}%)</font><br/>
 										</font>
 									</p>
 									{%else%}
