@@ -150,7 +150,11 @@
 										{%if error_data%}
 										<p><h2 style="color: orange">Please use a valid value from suggestions.</h2></p>
 										{%else%}
-										<p><h2 style="color: orange">Please select a stock to see updates.</h2></p>
+											{%if api_call_exceeded%}
+												<p><h2 style="color: orange">Number of API Calls Exceeded the quota - 5 Req/Min Or 500 Req/Day</h2></p>
+											{%else%}
+													<p><h2 style="color: orange">Please select a stock to see updates.</h2></p>
+											{%endif%}
 										{%endif%}
 									</font>
 									{%endif%}

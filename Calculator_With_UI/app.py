@@ -65,8 +65,15 @@ def post_assignment2():
     stock_time_series = r.json()
     if "Error Message" in stock_time_series:
         return render_template('assignment2.html', error_data="Error in API Call")
+    elif "Note" in stock_time_series:
+        return render_template('assignment2.html', api_call_exceeded="No. Of API Calls Exceeded for minute/day")
+    if len(stock) < 2:
+        url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + stock[0] + "&apikey=1VS6DHVM3DBWAYOH"
+        r = requests.get(url)
+        stock_meta = r.json()
+        stock.append(stock_meta['bestMatches'][0]["2. name"])
     stock_data = {'name': stock[1], 'symbol': stock[0]}
-    today = stock_time_series['Meta Data']['3. Last Refreshed']
+    today = stock_time_series['Meta Data']['3. Last Refreshed'].split(" ")[0]
     stock_data_today = stock_time_series['Time Series (Daily)'][today]
     stock_data['current'] = stock_data_today['4. close']
     stock_data['change_by_vol'] = round(float(stock_data_today['4. close']) - float(stock_data_today['1. open']),2)
