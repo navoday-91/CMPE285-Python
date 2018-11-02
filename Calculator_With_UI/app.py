@@ -72,11 +72,11 @@ def post_assignment2():
     stock_data['change_by_vol'] = round(float(stock_data_today['4. close']) - float(stock_data_today['1. open']),2)
     stock_data['change_by_percent'] = round((stock_data['change_by_vol']/float(stock_data_today['1. open']))*100,2)
     if stock_data['change_by_vol'] >= 0:
-        stock_data['change_by_vol'] = "+" + stock_data['change_by_vol']
-        stock_data['change_by_percent'] = "+" + stock_data['change_by_percent']
+        stock_data['change_by_vol'] = "+" + str(stock_data['change_by_vol'])
+        stock_data['change_by_percent'] = "+" + str(stock_data['change_by_percent'])
     else:
-        stock_data['change_by_vol'] = "-" + stock_data['change_by_vol']
-        stock_data['change_by_percent'] = "-" + stock_data['change_by_percent']
+        stock_data['change_by_vol'] = "-" + str(stock_data['change_by_vol'])
+        stock_data['change_by_percent'] = "-" + str(stock_data['change_by_percent'])
     pacific = datetime.now(pytz.timezone('US/Pacific'))
     temp = (pacific.strftime('%a-%b-%d-%H-%M-%S-%Y').split("-"))
     stock_data['time'] = " ".join(temp[:3])
