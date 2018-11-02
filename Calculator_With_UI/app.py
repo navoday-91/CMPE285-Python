@@ -1,6 +1,9 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from datetime import datetime
+import pytz
+import requests
 
 app = Flask(__name__)
 
@@ -44,5 +47,38 @@ def post_assignment1():
 
         return render_template('assignment1.html', users=profit_rep)
 
+
+@app.route('/assignment2', methods=['GET'])
+def get_assignment2():
+    return render_template('assignment2.html')
+
+
+@app.route('/assignment2', methods=['POST'])
+def post_assignment2():
+    days = ['','Monday',]
+    symbol = request.form['symbol']
+    stock = symbol.split(":")
+    url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol="
+    url += stock[0]
+    url += "&interval=5min&apikey=1VS6DHVM3DBWAYOH"
+    r = requests.get(url)
+    stock_time_series = r.json()
+    if "Error Message" in stock_time_series:
+        return render_template('assignment2.html', error_data="Error in API Call")
+    stock_data = {'name': stock[1], 'symbol': stock[0]}
+    today = stock_time_series['Meta Data']['3. Last Refreshed']
+    stock_data_today = stock_time_series['Time Series (Daily)'][today]
+    stock_data['current'] = stock_data_today['4. close']
+    stock_data['change_by_vol'] = round(float(stock_data_today['4. close']) - float(stock_data_today['1. open']),2)
+    stock_data['change_by_percent'] = round((stock_data['change_by_vol']/float(stock_data_today['1. open']))*100,2)
+    pacific = datetime.now(pytz.timezone('US/Pacific'))
+    temp = (pacific.strftime('%a-%b-%d-%H-%M-%S-%Y').split("-"))
+    stock_data['time'] = " ".join(temp[:3])
+    stock_data['time'] += " " + ":".join(temp[3:6]) + " PDT " + temp[6]
+    return render_template('assignment2.html', stock_data = stock_data)
+
+
+
+
 if __name__ == '__main__':
-    app.run(debug=False, port=80, host='0.0.0.0')
+    app.run(debug=False, port=5000, host='0.0.0.0')
