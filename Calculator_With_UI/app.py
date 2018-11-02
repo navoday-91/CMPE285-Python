@@ -74,9 +74,6 @@ def post_assignment2():
     if stock_data['change_by_vol'] >= 0:
         stock_data['change_by_vol'] = "+" + str(stock_data['change_by_vol'])
         stock_data['change_by_percent'] = "+" + str(stock_data['change_by_percent'])
-    else:
-        stock_data['change_by_vol'] = "-" + str(stock_data['change_by_vol'])
-        stock_data['change_by_percent'] = "-" + str(stock_data['change_by_percent'])
     pacific = datetime.now(pytz.timezone('US/Pacific'))
     temp = (pacific.strftime('%a-%b-%d-%H-%M-%S-%Y').split("-"))
     stock_data['time'] = " ".join(temp[:3])
