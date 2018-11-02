@@ -71,9 +71,10 @@ def post_assignment2():
     url = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + stock[0] + "&apikey=1VS6DHVM3DBWAYOH"
     r = requests.get(url)
     stock_meta = r.json()
-    stock.append(stock_meta['bestMatches'][0]["2. name"])
-    stock.append(stock_meta['bestMatches'][0]["8. currency"])
+    stock = [stock[0], stock_meta['bestMatches'][0]["2. name"], stock_meta['bestMatches'][0]["8. currency"]]
     stock_data = {'name': stock[1], 'symbol': stock[0], 'currency': stock[2]}
+    print(stock_data)
+    print(stock)
     today = stock_time_series['Meta Data']['3. Last Refreshed'].split(" ")[0]
     last_day = datetime.strptime(today, '%Y-%m-%d')
     last_day -= timedelta(days=1)
